@@ -1,5 +1,6 @@
 import os
 from textwrap import dedent
+from typing import List
 
 from crewai import Agent, Crew, Process, Task
 from crewai.tasks.task_output import TaskOutput
@@ -24,6 +25,8 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 duck_search_tool = DuckDuckGoSearchRun()
 website_scrape_tool = AgentTools().scrape_and_summarize_website
+#tools=[duck_search_tool, website_scrape_tool],
+agent_tools=[duck_search_tool]
 
 def cria_llm():
     return ChatOpenAI(model_name=os.getenv("MODEL_NAME") , openai_api_key=os.getenv("OPENAI_API_KEY"))
@@ -36,7 +39,7 @@ def analista_de_mercado() -> Agent:
 		backstory="Você é um analista de mercado experiente com expertise em análise competitiva, pesquisa de tendências e identificação de oportunidades.",
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool, website_scrape_tool],
+		tools=agent_tools,
 		llm=cria_llm()
 	)
 	return agent
@@ -48,7 +51,7 @@ def especialista_segmentacao_swot() -> Agent:
 		backstory='Você é um especialista com profundo conhecimento em análise SWOT e estratégias de segmentação de mercado.',
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool, website_scrape_tool],
+		tools=agent_tools,
 		llm=cria_llm()
 	)
 	return agent
@@ -60,7 +63,7 @@ def estrategista_de_marketing() -> Agent:
 		backstory='Você é um estrategista de marketing experiente focado em criar campanhas de marketing impactantes e planos de negócios.',
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool, website_scrape_tool],
+		tools=agent_tools,
 		llm=cria_llm()
 	)
 	return agent
@@ -72,17 +75,22 @@ def redator_de_resumo_executivo() -> Agent:
 		backstory='Você é um redator habilidoso especializado em criar resumos executivos concisos e informativos.',
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool, website_scrape_tool],
+		tools=agent_tools,
 		llm=cria_llm()
 	)
 	return agent
 
 # Definição das tarefas
-def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, context) -> Task:
+def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, sites: List[str], context) -> Task:
 	try:
+		lista_sites = '\n'.join([f"\t\t{site}" for site in sites])
+
 		task = Task(description=dedent(f"""\
 					Identificar concorrentes, analisar suas ofertas, preços, estratégias de marketing 
 					e posicionamento no mercado do produto {produto}.
+
+					Faça pesquisas nestes sites para obter informações sobre os concorrentes:
+					{lista_sites}
 					"""),
 			expected_output='Análise detalhada dos concorrentes, incluindo ofertas, preços, estratégias e posicionamento.',
 			agent=analista_de_mercado,
@@ -218,14 +226,15 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 
 #################################################################################################
 # Execução da Crew
-def executar_crew(produto: str):
+def executar_analise(produto: str, sites_concorrentes: List[str] = None):
 
 	a1 = analista_de_mercado()
 	a2 = especialista_segmentacao_swot()
 	a3 = estrategista_de_marketing()
 	a4 = redator_de_resumo_executivo()	
 
-	t0 = tarefa_analise_concorrencia(a1, produto, None)
+	t0 = tarefa_analise_concorrencia(a1, produto, sites_concorrentes, None)
+	
 	t1 = tarefa_pesquisa_tendencias(a1, produto, [t0])
 	t2 = tarefa_identificacao_oportunidades(a1, produto, [t0, t1])
 	t3 = tarefa_analise_swot(a2, produto, [t0, t1, t2])

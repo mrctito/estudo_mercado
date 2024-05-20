@@ -12,17 +12,19 @@ from unstructured.partition.html import partition_html
 
 class AgentTools():
 
-  processed_pages = Set()
+  processed_pages = set()
 
   @tool("Scrape website content")
   def scrape_and_summarize_website(website):
     """Useful to scrape and summarize a website content"""
 
+    """
     if website in AgentTools.processed_pages:
       return "This website has already been processed"
     else:
       AgentTools.processed_pages.add(website)
-
+    """
+    
     user_agents = [
       "Mozilla/5.0 (Windows NT 10.0; rv:91.0) Gecko/20100101 Firefox/91.0",
       "Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0",

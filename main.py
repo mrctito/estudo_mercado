@@ -4,14 +4,12 @@ import sys
 from crewai import Agent, Crew, Process, Task
 from langchain.agents import Tool
 
-from agent_setup import executar_crew
+from agent_setup import executar_analise, executar_crew
 
+produto = "Garrafa Térmica com Mostrador de Temperatura Digital"
+sites_concorrentes = ["https://www.termolar.com.br/garrafa-termica", "https://www.stanley1913.com.br/"]   
+result = executar_analise(produto, sites_concorrentes)
 
-def run_crewai(produto: str):
-    crew_result = executar_crew(produto)
-    return crew_result
-
-
-result = run_crewai("Garrafa Térmica com Mostrador de Temperatura Digital")
-print("\n\nResultado da execução da Crew:\n\n")
+print("\n\n====================================")
+print("Resultado da Análise de Mercado:\n\n")
 print(result)
