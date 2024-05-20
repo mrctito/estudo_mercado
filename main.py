@@ -4,7 +4,7 @@ import sys
 from crewai import Agent, Crew, Process, Task
 from langchain.agents import Tool
 
-from agent_setup import executar_analise, executar_crew
+from agent_setup import executar_analise
 
 produto = "Garrafa Térmica com Mostrador de Temperatura Digital"
 sites_concorrentes = ["https://www.termolar.com.br/garrafa-termica", "https://www.stanley1913.com.br/"]   
