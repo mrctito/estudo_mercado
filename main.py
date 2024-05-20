@@ -4,7 +4,7 @@ import sys
 from crewai import Agent, Crew, Process, Task
 from langchain.agents import Tool
 
-from crew_setup import executar_crew
+from agent_setup import executar_crew
 
 
 def run_crewai(produto: str):

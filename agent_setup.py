@@ -10,8 +10,7 @@ from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_openai import ChatOpenAI
 
-from tool_browser import BrowserTools
-from tool_search import SearchTools
+from agent_tools_website import AgentTools
 
 load_dotenv() 
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -24,6 +23,7 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 #ScrapeWebsiteTool = ScrapeWebsiteTool()
 
 duck_search_tool = DuckDuckGoSearchRun()
+website_scrape_tool = AgentTools().scrape_and_summarize_website
 
 def cria_llm():
     return ChatOpenAI(model_name=os.getenv("MODEL_NAME") , openai_api_key=os.getenv("OPENAI_API_KEY"))
@@ -36,7 +36,7 @@ def analista_de_mercado() -> Agent:
 		backstory="Você é um analista de mercado experiente com expertise em análise competitiva, pesquisa de tendências e identificação de oportunidades.",
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool],
+		tools=[duck_search_tool, website_scrape_tool],
 		llm=cria_llm()
 	)
 	return agent
@@ -48,7 +48,7 @@ def especialista_segmentacao_swot() -> Agent:
 		backstory='Você é um especialista com profundo conhecimento em análise SWOT e estratégias de segmentação de mercado.',
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool],
+		tools=[duck_search_tool, website_scrape_tool],
 		llm=cria_llm()
 	)
 	return agent
@@ -60,7 +60,7 @@ def estrategista_de_marketing() -> Agent:
 		backstory='Você é um estrategista de marketing experiente focado em criar campanhas de marketing impactantes e planos de negócios.',
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool],
+		tools=[duck_search_tool, website_scrape_tool],
 		llm=cria_llm()
 	)
 	return agent
@@ -72,7 +72,7 @@ def redator_de_resumo_executivo() -> Agent:
 		backstory='Você é um redator habilidoso especializado em criar resumos executivos concisos e informativos.',
 		allow_delegation=False,
 		verbose=True,
-		tools=[duck_search_tool],
+		tools=[duck_search_tool, website_scrape_tool],
 		llm=cria_llm()
 	)
 	return agent
