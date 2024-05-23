@@ -248,18 +248,6 @@ def executar_analise(produto: str, sites_concorrentes: List[str] = None):
 	a4 = redator_de_resumo_executivo()
 
 	t0 = tarefa_analise_concorrencia(a1, produto, sites_concorrentes, None)
-	
-	"""
-	t1 = tarefa_pesquisa_tendencias(a1, produto, [t0])
-	t2 = tarefa_identificacao_oportunidades(a1, produto, [t1])
-	t3 = tarefa_analise_swot(a2, produto, [t2])
-	t4 = tarefa_segmentacao_mercado(a2, produto, [t3])
-	t5 = tarefa_estrategia_marketing(a3, produto, [t4])
-	t6 = tarefa_plano_negocios(a3, produto, [t5])
-	t7 = tarefa_modelagem_cenarios(a3, produto, [t6])
-	t8 = tarefa_resumo_executivo(a4, produto, [t7])
-	"""
-	
 	t1 = tarefa_pesquisa_tendencias(a1, produto, [t0])
 	t2 = tarefa_identificacao_oportunidades(a1, produto, [t0, t1])
 	t3 = tarefa_analise_swot(a2, produto, [t0, t1, t2])
@@ -269,8 +257,6 @@ def executar_analise(produto: str, sites_concorrentes: List[str] = None):
 	t7 = tarefa_modelagem_cenarios(a3, produto, [t0, t1, t2, t3, t4, t5, t6])
 	t8 = tarefa_resumo_executivo(a4, produto, [t0, t1, t2, t3, t4, t5, t6, t7])
 	
-
-	# Create Crew responsible for Copy
 	crew = Crew(
 		agents=[
 			a1,
@@ -300,6 +286,7 @@ def executar_analise(produto: str, sites_concorrentes: List[str] = None):
 
 def save_result(output: TaskOutput):
     print(f"""
+		=======================================
         Task completed!
         Task: {output.description}
         Output: {output.result}
