@@ -27,8 +27,16 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 #website_scrape_tool = AgentTools().scrape_and_summarize_website
 #tools=[duck_search_tool, website_scrape_tool],
 
-duck_search_tool = DuckDuckGoSearchRun()
-agent_tools=[duck_search_tool]
+#duck_search_tool = DuckDuckGoSearchRun()
+#agent_tools=[duck_search_tool]
+
+
+@tool('DuckDuckGoSearch')
+def duck_search_wrapper(search_query: str):
+    """Search the web for information on a given topic"""
+    return DuckDuckGoSearchRun().run(search_query)
+agent_tools=[duck_search_wrapper]
+
 
 def cria_llm():
     return ChatOpenAI(model_name=os.getenv("MODEL_NAME") , openai_api_key=os.getenv("OPENAI_API_KEY"))
