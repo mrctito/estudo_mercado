@@ -100,12 +100,12 @@ def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, sites:
 		lista_sites = '\n'.join([f"\t\t{site}" for site in sites])
 
 		task = Task(description=dedent(f"""\
-					Identificar concorrentes, analisar suas ofertas, preços, estratégias de marketing 
-					e posicionamento no mercado do produto {produto}.
+				Identificar concorrentes, analisar suas ofertas, preços, estratégias de marketing 
+				e posicionamento no mercado do produto {produto}.
 
-					Faça pesquisas nestes sites para obter informações sobre os concorrentes:
-					{lista_sites}
-					"""),
+				Faça pesquisas nestes sites para obter informações sobre os concorrentes:
+				{lista_sites}
+				"""),
 			expected_output='Análise detalhada dos concorrentes, incluindo ofertas, preços, estratégias e posicionamento.',
 			agent=analista_de_mercado,
 			async_execution=False,
