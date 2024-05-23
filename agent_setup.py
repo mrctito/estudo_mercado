@@ -23,9 +23,11 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 #ScrapeWebsiteTool = ScrapeWebsiteTool()
 
-duck_search_tool = DuckDuckGoSearchRun()
-website_scrape_tool = AgentTools().scrape_and_summarize_website
+#duck_search_tool = DuckDuckGoSearchRun()
+#website_scrape_tool = AgentTools().scrape_and_summarize_website
 #tools=[duck_search_tool, website_scrape_tool],
+
+duck_search_tool = DuckDuckGoSearchRun()
 agent_tools=[duck_search_tool]
 
 def cria_llm():
