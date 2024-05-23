@@ -49,7 +49,7 @@ def analista_de_mercado() -> Agent:
 		backstory="Você é um analista de mercado experiente com expertise em análise competitiva, pesquisa de tendências e identificação de oportunidades.",
 		allow_delegation=False,
 		verbose=True,
-		max_iter=3,
+		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
@@ -62,7 +62,7 @@ def especialista_segmentacao_swot() -> Agent:
 		backstory='Você é um especialista com profundo conhecimento em análise SWOT e estratégias de segmentação de mercado.',
 		allow_delegation=False,
 		verbose=True,
-		max_iter=3,
+		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
@@ -75,7 +75,7 @@ def estrategista_de_marketing() -> Agent:
 		backstory='Você é um estrategista de marketing experiente focado em criar campanhas de marketing impactantes e planos de negócios.',
 		allow_delegation=False,
 		verbose=True,
-		max_iter=3,
+		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
@@ -88,7 +88,7 @@ def redator_de_resumo_executivo() -> Agent:
 		backstory='Você é um redator habilidoso especializado em criar resumos executivos concisos e informativos.',
 		allow_delegation=False,
 		verbose=True,
-		max_iter=3,
+		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
