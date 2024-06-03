@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from langchain.agents import load_tools
 from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchRun
+from langchain_core.callbacks import BaseCallbackHandler
 from langchain_openai import ChatOpenAI
 
 from agent_tools_website import AgentTools
@@ -42,7 +43,7 @@ def cria_llm():
     return ChatOpenAI(model_name=os.getenv("MODEL_NAME") , openai_api_key=os.getenv("OPENAI_API_KEY"))
 
 # Definição dos agentes
-def analista_de_mercado() -> Agent:
+def analista_de_mercado(callback_handler) -> Agent:
 	agent = Agent(
 		role="Analista de Mercado",
 		goal="Conduzir uma análise de mercado abrangente para um novo produto.",
@@ -53,11 +54,12 @@ def analista_de_mercado() -> Agent:
 		allow_delegation=False,
 		verbose=True,
 		tools=agent_tools,
+		callbacks=[callback_handler],
 		llm=cria_llm()
 	)
 	return agent
 
-def estrategista_de_marketing() -> Agent:
+def estrategista_de_marketing(callback_handler) -> Agent:
 	agent = Agent(
 		role='Estrategista de Marketing',
 		goal='Desenvolver estratégias de marketing eficazes para o produto.',
@@ -65,11 +67,12 @@ def estrategista_de_marketing() -> Agent:
 		allow_delegation=False,
 		verbose=True,
 		tools=agent_tools,
+		callbacks=[callback_handler],
 		llm=cria_llm()
 	)
 	return agent
 
-def redator_de_resumo_executivo() -> Agent:
+def redator_de_resumo_executivo(callback_handler) -> Agent:
 	agent = Agent(
 		role='Redator de Resumo Executivo',
 		goal='Compilar um resumo executivo completo com base na pesquisa e análise de mercado.',
@@ -77,6 +80,7 @@ def redator_de_resumo_executivo() -> Agent:
 		allow_delegation=False,
 		verbose=True,
 		tools=agent_tools,
+		callbacks=[callback_handler],
 		llm=cria_llm()
 	)
 	return agent
@@ -219,11 +223,11 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 
 #################################################################################################
 # Execução da Crew
-def executar_analise(produto: str, sites_concorrentes: List[str] = None):
+def executar_analise(callback_handler, produto: str, sites_concorrentes: List[str] = None):
 
-	a1 = analista_de_mercado()
-	a2 = estrategista_de_marketing()
-	a3 = redator_de_resumo_executivo()
+	a1 = analista_de_mercado(callback_handler)
+	a2 = estrategista_de_marketing(callback_handler)
+	a3 = redator_de_resumo_executivo(callback_handler)
 
 	t0 = tarefa_analise_concorrencia(a1, 		produto, sites_concorrentes, None)
 	t1 = tarefa_pesquisa_tendencias(a1, 		produto, 	[t0])
@@ -252,7 +256,7 @@ def executar_analise(produto: str, sites_concorrentes: List[str] = None):
 			t7,
 			t8,
 		],
-		process=Process.sequential,
+		process=Process.hierarchical, #sequential,
 		manager_llm=ChatOpenAI(model_name=os.getenv("MODEL_NAME") , openai_api_key=os.getenv("OPENAI_API_KEY")),
 		verbose=True
 	)
