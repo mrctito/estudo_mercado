@@ -46,23 +46,12 @@ def analista_de_mercado() -> Agent:
 	agent = Agent(
 		role="Analista de Mercado",
 		goal="Conduzir uma análise de mercado abrangente para um novo produto.",
-		backstory="Você é um analista de mercado experiente com expertise em análise competitiva, pesquisa de tendências e identificação de oportunidades.",
+		backstory=dedent(f"""\
+                		Você é um analista de mercado muito experiente com experiência em análise competitiva, 
+				   		análise de tendências, análise de SWOT e análise de oportunidades.
+        """),
 		allow_delegation=False,
 		verbose=True,
-		max_iter=10,
-		tools=agent_tools,
-		llm=cria_llm()
-	)
-	return agent
-
-def especialista_segmentacao_swot() -> Agent:
-	agent = Agent(
-		role='Especialista em Segmentação e SWOT',
-		goal='Realizar análises de SWOT e segmentação de mercado detalhadas.',
-		backstory='Você é um especialista com profundo conhecimento em análise SWOT e estratégias de segmentação de mercado.',
-		allow_delegation=False,
-		verbose=True,
-		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
@@ -75,7 +64,6 @@ def estrategista_de_marketing() -> Agent:
 		backstory='Você é um estrategista de marketing experiente focado em criar campanhas de marketing impactantes e planos de negócios.',
 		allow_delegation=False,
 		verbose=True,
-		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
@@ -88,7 +76,6 @@ def redator_de_resumo_executivo() -> Agent:
 		backstory='Você é um redator habilidoso especializado em criar resumos executivos concisos e informativos.',
 		allow_delegation=False,
 		verbose=True,
-		max_iter=10,
 		tools=agent_tools,
 		llm=cria_llm()
 	)
@@ -108,7 +95,6 @@ def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, sites:
 				"""),
 			expected_output='Análise detalhada dos concorrentes, incluindo ofertas, preços, estratégias e posicionamento.',
 			agent=analista_de_mercado,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -123,7 +109,6 @@ def tarefa_pesquisa_tendencias(analista_de_mercado: Agent, produto: str, context
 					"""),
 			expected_output='Relatório abrangente sobre tendências atuais e futuras do mercado.',
 			agent=analista_de_mercado,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -138,7 +123,6 @@ def tarefa_identificacao_oportunidades(analista_de_mercado: Agent, produto: str,
 					"""),
 			expected_output='Lista de novos segmentos de mercado ou nichos potenciais com justificativas.',
 			agent=analista_de_mercado,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -153,7 +137,6 @@ def tarefa_analise_swot(especialista_segmentacao_swot: Agent, produto: str, cont
 					"""),
 			expected_output='Relatório de análise SWOT para a empresa.',
 			agent=especialista_segmentacao_swot,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -168,7 +151,6 @@ def tarefa_segmentacao_mercado(especialista_segmentacao_swot: Agent, produto: st
 					"""),
 			expected_output='Estratégia de segmentação de mercado com critérios detalhados.',
 			agent=especialista_segmentacao_swot,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -183,7 +165,6 @@ def tarefa_estrategia_marketing(estrategista_de_marketing: Agent, produto: str, 
 					"""),
 			expected_output='Recomendações de estratégias de marketing.',
 			agent=estrategista_de_marketing,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -198,7 +179,6 @@ def tarefa_plano_negocios(estrategista_de_marketing: Agent, produto: str, contex
 					"""),
 			expected_output='Documento detalhado do plano de negócios.',
 			agent=estrategista_de_marketing,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -214,7 +194,6 @@ def tarefa_modelagem_cenarios(estrategista_de_marketing: Agent, produto: str, co
 					"""),
 			expected_output='Modelos de cenários de mercado com análises.',
 			agent=estrategista_de_marketing,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -224,12 +203,12 @@ def tarefa_modelagem_cenarios(estrategista_de_marketing: Agent, produto: str, co
 
 def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, context) -> Task:
 	try:
-		task = Task(description=dedent(f"""Escrever um relatórios executivo detalhado com base na análise de mercado 
-					para o produto {produto}.
+		task = Task(description=dedent(f"""Escrever um relatórios executivo detalhado com base na análise de mercado, 
+								segmentação de mercado, análise SWOT, plano de negócios, segmentação de cenários e 
+								estratégia de marketing, para o produto {produto}.
 					"""),
 			expected_output='Relatório executivo abrangente e detalhado da análise de mercado.',
 			agent=redator_de_resumo_executivo,
-			async_execution=False,
 			context=context
 		)
 		return task
@@ -243,26 +222,24 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 def executar_analise(produto: str, sites_concorrentes: List[str] = None):
 
 	a1 = analista_de_mercado()
-	a2 = especialista_segmentacao_swot()
-	a3 = estrategista_de_marketing()
-	a4 = redator_de_resumo_executivo()
+	a2 = estrategista_de_marketing()
+	a3 = redator_de_resumo_executivo()
 
-	t0 = tarefa_analise_concorrencia(a1, produto, sites_concorrentes, None)
-	t1 = tarefa_pesquisa_tendencias(a1, produto, [t0])
-	t2 = tarefa_identificacao_oportunidades(a1, produto, [t0, t1])
-	t3 = tarefa_analise_swot(a2, produto, [t0, t1, t2])
-	t4 = tarefa_segmentacao_mercado(a2, produto, [t0, t1, t2, t3])
-	t5 = tarefa_estrategia_marketing(a3, produto, [t0, t1, t2, t3, t4])
-	t6 = tarefa_plano_negocios(a3, produto, [t0, t1, t2, t3, t4, t5])
-	t7 = tarefa_modelagem_cenarios(a3, produto, [t0, t1, t2, t3, t4, t5, t6])
-	t8 = tarefa_resumo_executivo(a4, produto, [t0, t1, t2, t3, t4, t5, t6, t7])
+	t0 = tarefa_analise_concorrencia(a1, 		produto, sites_concorrentes, None)
+	t1 = tarefa_pesquisa_tendencias(a1, 		produto, 	[t0])
+	t2 = tarefa_identificacao_oportunidades(a1, produto,	[t0, t1])
+	t3 = tarefa_analise_swot(a1, 				produto, 	[t0, t1, t2])
+	t4 = tarefa_segmentacao_mercado(a1, 		produto, 	[t0, t1, t2, t3])
+	t5 = tarefa_plano_negocios(a1, 				produto, 	[t0, t1, t2, t3, t4])
+	t6 = tarefa_modelagem_cenarios(a1, 			produto, 	[t0, t1, t2, t3, t4, t5])
+	t7 = tarefa_estrategia_marketing(a2, 		produto, 	[t0, t1, t2, t3, t4, t5, t6])
+	t8 = tarefa_resumo_executivo(a3, 			produto, 	[t0, t1, t2, t3, t4, t5, t6, t7])
 	
 	crew = Crew(
 		agents=[
 			a1,
 			a2,
-			a3,
-			a4,		
+			a3
 		],
 		tasks=[
 			t0,
