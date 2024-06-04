@@ -54,8 +54,7 @@ if prompt := st.chat_input(placeholder="Garrafa Térmica com Mostrador de Temper
     st.chat_message("user").write(prompt)
 
     produto = prompt
-    sites_concorrentes = ["https://www.termolar.com.br/garrafa-termica", "https://www.stanley1913.com.br/"]   
-    result = executar_analise(MyCustomHandler("teste"), produto, sites_concorrentes)
+    result = executar_analise(MyCustomHandler("teste"), False, produto)
 
     resposta = f"## Here is the Final Result \n\n {result}"
     st.session_state.messages.append({"role": "assistant", "content": resposta})

@@ -43,7 +43,7 @@ def cria_llm():
     return ChatOpenAI(model_name=os.getenv("MODEL_NAME") , openai_api_key=os.getenv("OPENAI_API_KEY"))
 
 # Definição dos agentes
-def analista_de_mercado(callback_handler) -> Agent:
+def analista_de_mercado(callback_handler, verbose) -> Agent:
 	agent = Agent(
 		role="Analista de Mercado",
 		goal="Conduzir uma análise de mercado abrangente para um novo produto.",
@@ -52,33 +52,33 @@ def analista_de_mercado(callback_handler) -> Agent:
 				   		análise de tendências, análise de SWOT e análise de oportunidades.
         """),
 		allow_delegation=False,
-		verbose=True,
+		verbose=verbose,
 		tools=agent_tools,
 		callbacks=[callback_handler],
 		llm=cria_llm()
 	)
 	return agent
 
-def estrategista_de_marketing(callback_handler) -> Agent:
+def estrategista_de_marketing(callback_handler, verbose) -> Agent:
 	agent = Agent(
 		role='Estrategista de Marketing',
 		goal='Desenvolver estratégias de marketing eficazes para o produto.',
 		backstory='Você é um estrategista de marketing experiente focado em criar campanhas de marketing impactantes e planos de negócios.',
 		allow_delegation=False,
-		verbose=True,
+		verbose=verbose,
 		tools=agent_tools,
 		callbacks=[callback_handler],
 		llm=cria_llm()
 	)
 	return agent
 
-def redator_de_resumo_executivo(callback_handler) -> Agent:
+def redator_de_resumo_executivo(callback_handler, verbose) -> Agent:
 	agent = Agent(
 		role='Redator de Resumo Executivo',
 		goal='Compilar um resumo executivo completo com base na pesquisa e análise de mercado.',
 		backstory='Você é um redator habilidoso especializado em criar resumos executivos concisos e informativos.',
 		allow_delegation=False,
-		verbose=True,
+		verbose=verbose,
 		tools=agent_tools,
 		callbacks=[callback_handler],
 		llm=cria_llm()
@@ -86,16 +86,11 @@ def redator_de_resumo_executivo(callback_handler) -> Agent:
 	return agent
 
 # Definição das tarefas
-def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, sites: List[str], context) -> Task:
+def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, context) -> Task:
 	try:
-		lista_sites = '\n'.join([f"\t\t{site}" for site in sites])
-
 		task = Task(description=dedent(f"""\
 				Identificar concorrentes, analisar suas ofertas, preços, estratégias de marketing 
 				e posicionamento no mercado do produto {produto}.
-
-				Faça pesquisas nestes sites para obter informações sobre os concorrentes:
-				{lista_sites}
 				"""),
 			expected_output='Análise detalhada dos concorrentes, incluindo ofertas, preços, estratégias e posicionamento.',
 			agent=analista_de_mercado,
@@ -223,11 +218,11 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 
 #################################################################################################
 # Execução da Crew
-def executar_analise(callback_handler, produto: str, sites_concorrentes: List[str] = None):
+def executar_analise(callback_handler, verbose, produto: str, sites_concorrentes: List[str] = None):
 
-	a1 = analista_de_mercado(callback_handler)
-	a2 = estrategista_de_marketing(callback_handler)
-	a3 = redator_de_resumo_executivo(callback_handler)
+	a1 = analista_de_mercado(callback_handler, verbose)
+	a2 = estrategista_de_marketing(callback_handler, verbose)
+	a3 = redator_de_resumo_executivo(callback_handler, verbose)
 
 	t0 = tarefa_analise_concorrencia(a1, 		produto, sites_concorrentes, None)
 	t1 = tarefa_pesquisa_tendencias(a1, 		produto, 	[t0])
