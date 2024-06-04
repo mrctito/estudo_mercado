@@ -40,7 +40,7 @@ class MyCustomHandler(BaseCallbackHandler):
 #print(result)
 
 
-st.title("💬 CrewAI Writing Studio") 
+st.title("Plataforma CogTech") 
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", "content": "Qual Pesquisa de Mercado Você Deseja Realizar?"}]
