@@ -43,7 +43,7 @@ class MyCustomHandler(BaseCallbackHandler):
 st.title("💬 CrewAI Writing Studio") 
 
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "What blog post do you want us to write?"}]
+    st.session_state["messages"] = [{"role": "assistant", "content": "Qual Pesquisa de Mercado Você Deseja Realizar?"}]
 
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
