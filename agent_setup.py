@@ -94,7 +94,10 @@ def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, contex
 				"""),
 			expected_output=dedent(f"""\
 						  Análise detalhada dos concorrentes, incluindo ofertas, preços, 
-						  estratégias e posicionamento. Escreva em Português.
+						  estratégias e posicionamento. 
+						  Comparativo entre o produto {produto} e os concorrentes.
+						  Análise de viabilidade do produto {produto} no mercado.
+						  Escreva em Português.
 						  """),
 			agent=analista_de_mercado,
 			context=context
@@ -128,6 +131,7 @@ def tarefa_identificacao_oportunidades(analista_de_mercado: Agent, produto: str,
 					"""),
 			expected_output=dedent(f"""\
 					Lista de novos segmentos de mercado ou nichos potenciais com justificativas.
+					Análise de viabilidade do produto {produto} no mercado.
 					Escreva em Português.
 					"""),
 			agent=analista_de_mercado,
@@ -195,7 +199,7 @@ def tarefa_plano_negocios(estrategista_de_marketing: Agent, produto: str, contex
 					estratégias de entrada e previsões financeiras, para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-					Documento detalhado do plano de negócios.
+					Documento detalhado do plano de negócios, análise minuciosa de viabilidade do produto {produto} no mercado.
 					Escreva em Português.
 				"""),
 			agent=estrategista_de_marketing,
@@ -231,7 +235,7 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 								estratégia de marketing, para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-				Relatório executivo abrangente e detalhado da análise de mercado.
+				Relatório executivo abrangente e detalhado da análise de mercado e viabilidade do produto {produto}.
 				Escreva em Português.
 				"""),
 			agent=redator_de_resumo_executivo,
