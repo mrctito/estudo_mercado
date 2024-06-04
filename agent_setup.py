@@ -97,6 +97,7 @@ def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, contex
 						  estratégias e posicionamento. 
 						  Comparativo entre o produto {produto} e os concorrentes.
 						  Análise de viabilidade do produto {produto} no mercado.
+						  Análise dos diferenciais.
 						  Escreva em Português.
 						  """),
 			agent=analista_de_mercado,
@@ -132,6 +133,7 @@ def tarefa_identificacao_oportunidades(analista_de_mercado: Agent, produto: str,
 			expected_output=dedent(f"""\
 					Lista de novos segmentos de mercado ou nichos potenciais com justificativas.
 					Análise de viabilidade do produto {produto} no mercado.
+					Análise dos diferenciais.
 					Escreva em Português.
 					"""),
 			agent=analista_de_mercado,
@@ -148,7 +150,7 @@ def tarefa_analise_swot(especialista_segmentacao_swot: Agent, produto: str, cont
 					Oportunidades, Ameaças) para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-					Relatório de análise SWOT para a empresa.
+					Relatório de análise SWOT para o produto {produto}.
 					Escreva em Português.
 					"""),
 			agent=especialista_segmentacao_swot,
@@ -165,7 +167,7 @@ def tarefa_segmentacao_mercado(especialista_segmentacao_swot: Agent, produto: st
 					demográficos, geográficos, comportamentais e psicográficos, para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-					Estratégia de segmentação de mercado com critérios detalhados.
+					Estratégia de segmentação de mercado com critérios detalhados e insigths relevantes.
 					Escreva em Português.
 				"""),
 			agent=especialista_segmentacao_swot,
@@ -182,7 +184,7 @@ def tarefa_estrategia_marketing(estrategista_de_marketing: Agent, produto: str, 
 					canais de distribuição, promoção e precificação, para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-					Recomendações de estratégias de marketing.
+					Recomendações de estratégias de marketing abrangente e também com foco nos diferenciais.
 					Escreva em Português.
 					"""),
 			agent=estrategista_de_marketing,
@@ -199,7 +201,7 @@ def tarefa_plano_negocios(estrategista_de_marketing: Agent, produto: str, contex
 					estratégias de entrada e previsões financeiras, para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-					Documento detalhado do plano de negócios, análise minuciosa de viabilidade do produto {produto} no mercado.
+					Documento detalhado do plano de negócios com análise minuciosa de viabilidade do produto {produto} no mercado.
 					Escreva em Português.
 				"""),
 			agent=estrategista_de_marketing,
@@ -217,7 +219,7 @@ def tarefa_modelagem_cenarios(estrategista_de_marketing: Agent, produto: str, co
 					concorrentes, para o produto {produto}.
 					"""),
 			expected_output=dedent(f"""\
-					Modelos de cenários de mercado com análises.
+					Modelos de cenários de mercado com análises e viabilidade economica.
 					Escreva em Português.
 				"""),
 			agent=estrategista_de_marketing,
