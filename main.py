@@ -54,7 +54,7 @@ if prompt := st.chat_input(placeholder="Garrafa Térmica com Mostrador de Temper
     st.chat_message("user").write(prompt)
 
     produto = prompt
-    result = executar_analise(MyCustomHandler("teste"), False, produto)
+    result = executar_analise(MyCustomHandler("Writer"), False, produto)
 
     resposta = f"## Here is the Final Result \n\n {result}"
     st.session_state.messages.append({"role": "assistant", "content": resposta})

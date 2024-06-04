@@ -92,7 +92,10 @@ def tarefa_analise_concorrencia(analista_de_mercado: Agent, produto: str, contex
 				Identificar concorrentes, analisar suas ofertas, preços, estratégias de marketing 
 				e posicionamento no mercado do produto {produto}.
 				"""),
-			expected_output='Análise detalhada dos concorrentes, incluindo ofertas, preços, estratégias e posicionamento.',
+			expected_output=dedent(f"""\
+						  Análise detalhada dos concorrentes, incluindo ofertas, preços, 
+						  estratégias e posicionamento. Escreva em Português.
+						  """),
 			agent=analista_de_mercado,
 			context=context
 		)
@@ -106,7 +109,10 @@ def tarefa_pesquisa_tendencias(analista_de_mercado: Agent, produto: str, context
 		task = Task(description=dedent(f"""Levantar insights sobre as tendências atuais do mercado 
 					e previsões futuras com base em pesquisas de mercado para o produto {produto}.
 					"""),
-			expected_output='Relatório abrangente sobre tendências atuais e futuras do mercado.',
+			expected_output=dedent(f"""\
+						  Relatório abrangente sobre tendências atuais e futuras do mercado.
+						  Escreva em Português.
+						  """),
 			agent=analista_de_mercado,
 			context=context
 		)
@@ -120,7 +126,10 @@ def tarefa_identificacao_oportunidades(analista_de_mercado: Agent, produto: str,
 		task = Task(description=dedent(f"""Identificar novos segmentos de mercado ou nichos que 
 					podem ser explorados para o produto {produto}.
 					"""),
-			expected_output='Lista de novos segmentos de mercado ou nichos potenciais com justificativas.',
+			expected_output=dedent(f"""\
+					Lista de novos segmentos de mercado ou nichos potenciais com justificativas.
+					Escreva em Português.
+					"""),
 			agent=analista_de_mercado,
 			context=context
 		)
@@ -134,7 +143,10 @@ def tarefa_analise_swot(especialista_segmentacao_swot: Agent, produto: str, cont
 		task = Task(description=dedent(f"""Elaborar uma análise SWOT (Forças, Fraquezas, 
 					Oportunidades, Ameaças) para o produto {produto}.
 					"""),
-			expected_output='Relatório de análise SWOT para a empresa.',
+			expected_output=dedent(f"""\
+					Relatório de análise SWOT para a empresa.
+					Escreva em Português.
+					"""),
 			agent=especialista_segmentacao_swot,
 			context=context
 		)
@@ -148,7 +160,10 @@ def tarefa_segmentacao_mercado(especialista_segmentacao_swot: Agent, produto: st
 		task = Task(description=dedent(f"""Sugerir segmentação do mercado com base em critérios 
 					demográficos, geográficos, comportamentais e psicográficos, para o produto {produto}.
 					"""),
-			expected_output='Estratégia de segmentação de mercado com critérios detalhados.',
+			expected_output=dedent(f"""\
+					Estratégia de segmentação de mercado com critérios detalhados.
+					Escreva em Português.
+				"""),
 			agent=especialista_segmentacao_swot,
 			context=context
 		)
@@ -162,7 +177,10 @@ def tarefa_estrategia_marketing(estrategista_de_marketing: Agent, produto: str, 
 		task = Task(description=dedent(f"""Fornecer recomendações sobre estratégias de marketing, 
 					canais de distribuição, promoção e precificação, para o produto {produto}.
 					"""),
-			expected_output='Recomendações de estratégias de marketing.',
+			expected_output=dedent(f"""\
+					Recomendações de estratégias de marketing.
+					Escreva em Português.
+					"""),
 			agent=estrategista_de_marketing,
 			context=context
 		)
@@ -176,7 +194,10 @@ def tarefa_plano_negocios(estrategista_de_marketing: Agent, produto: str, contex
 		task = Task(description=dedent(f"""Elaborar um plano de negócios detalhado, incluindo metas de mercado, 
 					estratégias de entrada e previsões financeiras, para o produto {produto}.
 					"""),
-			expected_output='Documento detalhado do plano de negócios.',
+			expected_output=dedent(f"""\
+					Documento detalhado do plano de negócios.
+					Escreva em Português.
+				"""),
 			agent=estrategista_de_marketing,
 			context=context
 		)
@@ -191,7 +212,10 @@ def tarefa_modelagem_cenarios(estrategista_de_marketing: Agent, produto: str, co
 					variáveis como mudanças econômicas, novas regulamentações ou lançamentos de produtos 
 					concorrentes, para o produto {produto}.
 					"""),
-			expected_output='Modelos de cenários de mercado com análises.',
+			expected_output=dedent(f"""\
+					Modelos de cenários de mercado com análises.
+					Escreva em Português.
+				"""),
 			agent=estrategista_de_marketing,
 			context=context
 		)
@@ -206,7 +230,10 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 								segmentação de mercado, análise SWOT, plano de negócios, segmentação de cenários e 
 								estratégia de marketing, para o produto {produto}.
 					"""),
-			expected_output='Relatório executivo abrangente e detalhado da análise de mercado.',
+			expected_output=dedent(f"""\
+				Relatório executivo abrangente e detalhado da análise de mercado.
+				Escreva em Português.
+				"""),
 			agent=redator_de_resumo_executivo,
 			context=context
 		)
@@ -218,13 +245,13 @@ def tarefa_resumo_executivo(redator_de_resumo_executivo: Agent, produto: str, co
 
 #################################################################################################
 # Execução da Crew
-def executar_analise(callback_handler, verbose, produto: str, sites_concorrentes: List[str] = None):
+def executar_analise(callback_handler, verbose, produto: str):
 
 	a1 = analista_de_mercado(callback_handler, verbose)
 	a2 = estrategista_de_marketing(callback_handler, verbose)
 	a3 = redator_de_resumo_executivo(callback_handler, verbose)
 
-	t0 = tarefa_analise_concorrencia(a1, 		produto, sites_concorrentes, None)
+	t0 = tarefa_analise_concorrencia(a1, 		produto, 	None)
 	t1 = tarefa_pesquisa_tendencias(a1, 		produto, 	[t0])
 	t2 = tarefa_identificacao_oportunidades(a1, produto,	[t0, t1])
 	t3 = tarefa_analise_swot(a1, 				produto, 	[t0, t1, t2])
